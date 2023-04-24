@@ -6,7 +6,7 @@ Created on Sun Apr 23 12:44:05 2023
 """
 
 from DataLoader import data_loader
-
+import numpy as np
 
 def NoisyOr_CPT(Xobservation,pi):
     """ this function calculate and return P(Y=1 | X=x) using Noisy OR 
@@ -22,7 +22,15 @@ def NoisyOr_CPT(Xobservation,pi):
     probY0 = 1 -probY1
     return probY1 , probY0
 def log_likelihood(data,pi):
-    pass
+    """ function to calculate log-likelihood using entire dataset and given 
+    noisy-or probablity vector Pi"""
+    L = 0
+    
+    for index, item in enumerate(data):
+        probY1 , probY0 = NoisyOr_CPT(item[0], pi) 
+        L += (1 - item[1])*np.log(probY0) + item[1]*np.log(probY1)   
+    
+    return L/len(data)
 
 
 if __name__ == "__main__" :
